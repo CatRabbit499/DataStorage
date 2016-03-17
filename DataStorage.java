@@ -1,4 +1,7 @@
 package com.NathanMeyer.DataStorage;
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
+import java.io.*;
 public class DataStorage{
     public static void main(String[]args){
         loadXml();
@@ -6,7 +9,8 @@ public class DataStorage{
         deleteXml();
     }
     public static loadXml(){
-        // code
+        DocumentBuilderFactory xmlBuilder = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = xmlBuilder.newDocumentBuilder();
     }
     public static parseXml(){
         // code
