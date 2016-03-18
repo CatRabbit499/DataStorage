@@ -1,6 +1,5 @@
-package DataStorage;
+package com.NathanMeyer.DataStorage;
 private class YamlGenerator{
-  Class.forName("className");
     private static getData(){
         XmlInterpreter.parseXml();
     }

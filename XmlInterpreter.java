@@ -1,8 +1,12 @@
+package DataStorage;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.xml.parsers.*;
+import org.w3c.dom.*;
 import java.io.*;
 
 public class XmlInterpreter{
+  Class.forName("className");
   public static void main(String[]args){
     loadXml();
     parseXml();
