@@ -1,8 +1,1 @@
-/**
- * 
- */
-/**
- * @author Canon
- *
- */
 package dataStorage;
