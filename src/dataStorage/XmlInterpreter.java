@@ -1,7 +1,4 @@
-package com.NathanMeyer.DataStorage;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.io.*;
+package dataStorage;
 
 public class XmlInterpreter{
   public static void main(String[]args){
