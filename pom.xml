@@ -32,6 +32,16 @@
 			<artifactId>snakeyaml</artifactId>
 			<version>1.17</version>
 		</dependency>
+		<dependency>
+ 			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+ 			<version>1.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -39,5 +49,15 @@
 			<name>SnakeYAML</name>
 			<url>https://mvnrepository.com/artifact/org.yaml/snakeyaml</url>
 		</repository>
-		</repositories>
+		<repository>
+			<id>jSoup Repo</id>
+			<name>jSoup</name>
+			<url>http://jsoup.org/</url>
+		</repository>
+		<repository>
+			<id>Apache Commons IO Repo</id>
+			<name>Apache Commons IO</name>
+			<url>https://mvnrepository.com/artifact/commons-io/commons-io</url>
+		</repository>
+	</repositories>
 </project>
