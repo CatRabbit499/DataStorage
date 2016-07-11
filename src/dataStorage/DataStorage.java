@@ -14,14 +14,14 @@ import java.util.zip.ZipOutputStream;
 	
 public class DataStorage{
 	private static File[] tmpFiles;
-	private static int numBackups = 10;
+	private static int numBackups;
 	private static Date date = new Date();
 	private static DateFormat dFmt = new SimpleDateFormat("MM dd yyyy @ HH;mm;ss");
 	private static String backupDirString =  System.getProperty("user.dir") + "\\src\\Resources\\Backups\\";
 	private static File archiveName = new File(backupDirString + "Cuttlefish backup from " + dFmt.format(date) + ".zip");
 	private static File backupDirFile = new File(backupDirString);
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException, CuttlefishException{
 		DataStorage.indexFiles();
 		DataStorage.saveFiles();
 		DataStorage.truncateBackups(10);
@@ -41,9 +41,6 @@ public class DataStorage{
 				return fileName.endsWith(".cuttlefish");
 			}
 		});
-//		for(int i=0; i<tmpFiles.length; i++){
-//			System.out.println(tmpFiles[i]);
-//		}
 		System.out.println("Indexed files!");
 		return tmpFiles;
     }
@@ -73,31 +70,26 @@ public class DataStorage{
 		}
 	}
 	
-	public static void truncateBackups(int num) throws IOException{
+	public static void truncateBackups(int num) throws IOException, CuttlefishException{
 		int count = 0;
-		if(backupDirFile.listFiles().length > numBackups){
-			for(int i=0; i<num; i++){
-				File[] backupList = new File[num];
-				for(File f : backupDirFile.listFiles()){
-					
-				}
-			}
-			
-			tmpFiles = new File(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\").listFiles(new FilenameFilter(){
-				public boolean accept(File directory, String fileName){
-					return fileName.endsWith(".cuttlefish");
-				}
-			});
-			for(File f : new File(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\").listFiles()){
-				if(f.exists() && !(new ArrayList<File>(Arrays.asList(tmpFiles)).contains(f))){
+		File[] backupList = new File(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\").listFiles();
+		File[] backupKeepArray;
+		if(backupList.length > num){
+			backupKeepArray = new File[num];
+			System.arraycopy(backupList, backupList.length-num, backupKeepArray, 0, num);
+			System.out.println(backupList.length + " backups total, " + backupKeepArray.length + " backups to keep, " + (backupList.length - backupKeepArray.length) + " files will be deleted");
+			ArrayList<File> backupKeepArrayList = new ArrayList<File>(Arrays.asList(backupKeepArray));
+			for(File f : backupList){
+			if(!backupKeepArrayList.contains(f)){
 					f.delete();
+					count++;
 				}
 			}
-			for(File f : backupDirFile.listFiles()){
-				f.renameTo(new File(f.getAbsolutePath().replace(".cuttlefish.tentacle", ".cuttlefish")));
-			}
+			System.out.println("Deleted " + count + " backups!");
 		}
-		System.out.println("Deleted " + count + " backups!");
+		else{
+			throw new CuttlefishException("Attempted to truncate nonexistant backup!");
+		}
 	}
 	
 	public static void truncateBackups(long date){
@@ -109,10 +101,5 @@ public class DataStorage{
 			}
 		}
 		System.out.println("Deleted " + count + " backups!");
-	}
-	
-	public static int getNum() throws IOException{
-		indexFiles();
-		return 0;
 	}
 }
