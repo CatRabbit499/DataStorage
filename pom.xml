@@ -42,6 +42,11 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.5</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>1.5</version>
+			</dependency>
 	</dependencies>
 	<repositories>
 		<repository>
@@ -58,6 +63,11 @@
 			<id>Apache Commons IO Repo</id>
 			<name>Apache Commons IO</name>
 			<url>https://mvnrepository.com/artifact/commons-io/commons-io</url>
+		</repository>
+		<repository>
+			<id>Apache Commons Compress Repo</id>
+			<name>Apache Commons Compress</name>
+			<url>https://mvnrepository.com/artifact/org.apache.commons/commons-compres</url>
 		</repository>
 	</repositories>
 </project>

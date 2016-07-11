@@ -4,25 +4,28 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import org.apache.commons.io.FileUtils;
 	
 public class DataStorage{
-	private static final URL RESOURCEDIR_URL = ClassLoader.class.getResource("Resources");
-	private static final String TEMPDIR_PATH = FileUtils.getTempDirectoryPath();
 	private static File[] tmpFiles;
+	private static int numBackups = 10;
+	private static Date date = new Date();
+	private static DateFormat dFmt = new SimpleDateFormat("MM dd yyyy @ HH;mm;ss");
+	private static String backupDirString =  System.getProperty("user.dir") + "\\src\\Resources\\Backups\\";
+	private static File archiveName = new File(backupDirString + "Cuttlefish backup from " + dFmt.format(date) + ".zip");
+	private static File backupDirFile = new File(backupDirString);
 
 	public static void main(String[] args) throws IOException{
 		DataStorage.indexFiles();
 		DataStorage.saveFiles();
+		DataStorage.truncateBackups(10);
+		// DataStorage.truncateBackups(System.currentTimeMillis() - 9001);
 	}
 	
 	public static File[] indexFiles() throws IOException{
@@ -41,39 +44,71 @@ public class DataStorage{
 //		for(int i=0; i<tmpFiles.length; i++){
 //			System.out.println(tmpFiles[i]);
 //		}
+		System.out.println("Indexed files!");
 		return tmpFiles;
     }
 	
-	public static void saveFiles(){
+	public static boolean saveFiles(){
 		try{
 			int length;
-			Date date = new Date();
 			byte[] buffer = new byte[1024];
 			FileInputStream backupInputStream;
 			ZipOutputStream backupZipOutputStream;
-			DateFormat dateFormat = new SimpleDateFormat("MM dd yyyy @ HH:mm:ss");
-			String fileName = "Backup from " + dateFormat.format(date).replace("-", " ").trim() + " for Cuttlefish.zip";
-			System.out.println(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\");
-			File backupZipFile = new File(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\" + fileName );
-			System.out.println(backupZipFile);
-			backupZipOutputStream = new ZipOutputStream(new FileOutputStream(backupZipFile));
-			System.out.println("Mark!");
+			backupZipOutputStream = new ZipOutputStream(new FileOutputStream(archiveName));
 			for(File f : tmpFiles){
 				backupInputStream = new FileInputStream(f);
-				System.out.println("Packing entry " + f.getName() + " to ZIP Backup");
 				backupZipOutputStream.putNextEntry(new ZipEntry(f.getName()));
 				while((length = backupInputStream.read(buffer)) > 0){
 					backupZipOutputStream.write(buffer, 0, length);
-					System.out.println("Writing bytes...");
 				}
 				backupZipOutputStream.closeEntry();
-				System.out.println("Entry " + f + " has been closed");
 			}
 			backupZipOutputStream.close();
+			System.out.println("Saved files!");
+			return true;
 		}catch(Exception e){
 			System.out.println("Exception: ");
 			e.printStackTrace();
+			return false;
 		}
+	}
+	
+	public static void truncateBackups(int num) throws IOException{
+		int count = 0;
+		if(backupDirFile.listFiles().length > numBackups){
+			for(int i=0; i<num; i++){
+				File[] backupList = new File[num];
+				for(File f : backupDirFile.listFiles()){
+					
+				}
+			}
+			
+			tmpFiles = new File(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\").listFiles(new FilenameFilter(){
+				public boolean accept(File directory, String fileName){
+					return fileName.endsWith(".cuttlefish");
+				}
+			});
+			for(File f : new File(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\").listFiles()){
+				if(f.exists() && !(new ArrayList<File>(Arrays.asList(tmpFiles)).contains(f))){
+					f.delete();
+				}
+			}
+			for(File f : backupDirFile.listFiles()){
+				f.renameTo(new File(f.getAbsolutePath().replace(".cuttlefish.tentacle", ".cuttlefish")));
+			}
+		}
+		System.out.println("Deleted " + count + " backups!");
+	}
+	
+	public static void truncateBackups(long date){
+		int count = 0;
+		for(File f : backupDirFile.listFiles()){
+			if(f.getName().endsWith("zip") && f.lastModified() < date){
+				f.delete();
+				count++;
+			}
+		}
+		System.out.println("Deleted " + count + " backups!");
 	}
 	
 	public static int getNum() throws IOException{
