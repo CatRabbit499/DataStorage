@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,16 +20,30 @@ public class DataStorage{
 	private static Date date = new Date();
 	private static DateFormat dFmt = new SimpleDateFormat("MM dd yyyy @ HH;mm;ss");
 	private static String backupDirString =  System.getProperty("user.dir") + "\\src\\Resources\\Backups\\";
+	private static File[] backupList = new File(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\").listFiles();
 	private static File archiveName = new File(backupDirString + "Cuttlefish backup from " + dFmt.format(date) + ".zip");
 	private static File backupDirFile = new File(backupDirString);
+	private static CuttlefishSQL cuttlefishSQL = new CuttlefishSQL();
 
 	public static void main(String[] args) throws IOException, CuttlefishException{
-		DataStorage.indexFiles();
-		DataStorage.saveFiles();
-		DataStorage.truncateBackups(10);
-		// DataStorage.truncateBackups(System.currentTimeMillis() - 9001);
+		DataStorage.testConnection();
 	}
 	
+	private static void testConnection(){
+		String sql = "SELECT * FROM `pet`";
+		try{
+		    PreparedStatement statement = cuttlefishSQL.connect().prepareStatement(sql);
+		} catch (SQLException e){
+		    e.printStackTrace();
+		} finally {
+			cuttlefishSQL.disconnect();
+		}
+	}
+
+	private static void tryBackup() {
+		
+	}
+
 	public static File[] indexFiles() throws IOException{
 //		URL Indexer for Project Cuttlefish
 //		Document doc = Jsoup.connect("http://www.CuttlefishWebServerURL").get();
@@ -72,7 +88,6 @@ public class DataStorage{
 	
 	public static void truncateBackups(int num) throws IOException, CuttlefishException{
 		int count = 0;
-		File[] backupList = new File(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\").listFiles();
 		File[] backupKeepArray;
 		if(backupList.length > num){
 			backupKeepArray = new File[num];
