@@ -30,13 +30,14 @@ public class DataStorage{
 	}
 	
 	private static void testConnection(){
-		String sql = "SELECT * FROM `pet`";
+		doQuery("SELECT * FROM `pet`");
+	}
+
+	private static void doQuery(String sql) {
 		try{
-		    PreparedStatement statement = cuttlefishSQL.connect().prepareStatement(sql);
-		} catch (SQLException e){
-		    e.printStackTrace();
-		} finally {
-			cuttlefishSQL.disconnect();
+			PreparedStatement statement = cuttlefishSQL.connect().prepareStatement(sql);
+		}catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 
