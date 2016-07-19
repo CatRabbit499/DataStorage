@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,8 +17,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 	
 public class DataStorage{
-	private static File[] tmpFiles;
-	private static int numBackups;
+	private static File[] tmpFiles;                                                                             
 	private static Date date = new Date();
 	private static DateFormat dFmt = new SimpleDateFormat("MM dd yyyy @ HH;mm;ss");
 	private static String backupDirString =  System.getProperty("user.dir") + "\\src\\Resources\\Backups\\";
@@ -30,12 +31,31 @@ public class DataStorage{
 	}
 	
 	private static void testConnection(){
-		doQuery("SELECT * FROM `pet`");
+		doQuery("TRUNCATE PET", false);
+		doQuery("LOAD DATA LOCAL INFILE 'C:\\Users\\Canon\\Desktop\\PetData.txt' INTO TABLE PET", false);
+		doQuery("SELECT * FROM `pet`", true);
 	}
 
-	private static void doQuery(String sql) {
+	private static void doQuery(String sql, Boolean display) {
 		try{
 			PreparedStatement statement = cuttlefishSQL.connect().prepareStatement(sql);
+			if(display && statement.execute()){
+				System.out.println(statement.getResultSet().toString());
+				System.out.println();
+				
+				ResultSet resultSet = statement.getResultSet();
+				ResultSetMetaData rsmd = resultSet.getMetaData();
+				int columnsNumber = rsmd.getColumnCount();
+				while (resultSet.next()) {
+				    for (int i = 1; i <= columnsNumber; i++) {
+				        if (i > 1) System.out.print(",  ");
+				        String columnValue = resultSet.getString(i);
+				        System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
+				    }
+				    System.out.println("");
+				}
+				
+			}
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
