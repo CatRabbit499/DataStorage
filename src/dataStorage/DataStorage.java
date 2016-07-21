@@ -31,30 +31,29 @@ public class DataStorage{
 	}
 	
 	private static void testConnection(){
-		doQuery("TRUNCATE PET", false);
-		doQuery("LOAD DATA LOCAL INFILE 'C:\\Users\\Canon\\Desktop\\PetData.txt' INTO TABLE PET", false);
-		doQuery("SELECT * FROM `pet`", true);
+		doQuery("TRUNCATE teacher_list", false);
+		doQuery("LOAD DATA LOCAL INFILE 'C:\\Users\\Canon\\Desktop\\TeacherList.txt' INTO TABLE teacher_list", false);
+		doQuery("SELECT * FROM `teacher_list`", true);
 	}
 
 	private static void doQuery(String sql, Boolean display) {
 		try{
 			PreparedStatement statement = cuttlefishSQL.connect().prepareStatement(sql);
 			if(display && statement.execute()){
-				System.out.println(statement.getResultSet().toString());
-				System.out.println();
-				
+				System.out.println("Result Set: " + statement.getResultSet().toString());
+				System.out.println("Status: Computing");
 				ResultSet resultSet = statement.getResultSet();
 				ResultSetMetaData rsmd = resultSet.getMetaData();
 				int columnsNumber = rsmd.getColumnCount();
+				System.out.println("Status: Retrieving");
 				while (resultSet.next()) {
-				    for (int i = 1; i <= columnsNumber; i++) {
+				    for (int i = 1; i <= columnsNumber; i++){
 				        if (i > 1) System.out.print(",  ");
 				        String columnValue = resultSet.getString(i);
 				        System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
 				    }
-				    System.out.println("");
 				}
-				
+				System.out.println("Status: Queried");
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();
