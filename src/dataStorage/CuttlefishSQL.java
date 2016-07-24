@@ -11,7 +11,6 @@ public class CuttlefishSQL{
 	private static final String USERNAME = "root";
 	private static final String PASSWORD = "";
 	private static final String MAX_POOL = "250";
-	private static final boolean SSL_TOGGLE = true;
 	private Connection connection;
 	private Properties properties;
 	
@@ -21,7 +20,6 @@ public class CuttlefishSQL{
 	        properties.setProperty("user", USERNAME);
 	        properties.setProperty("password", PASSWORD);
 	        properties.setProperty("MaxPooledStatements", MAX_POOL);
-	        properties.setProperty("SSL", SSL_TOGGLE);
 	    }
 	    return properties;
 	}
@@ -38,12 +36,12 @@ public class CuttlefishSQL{
 	    return connection;
 	}
 	
-	public void disconnect() {
-	    if (connection != null) {
-	        try {
+	public void disconnect(){
+	    if(connection != null){
+	        try{
 	            connection.close();
 	            connection = null;
-	        } catch (SQLException e) {
+	        }catch(SQLException e){
 	            e.printStackTrace();
 	        }
 	    }

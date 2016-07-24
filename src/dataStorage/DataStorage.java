@@ -23,39 +23,44 @@ public class DataStorage{
 	private static String backupDirString =  System.getProperty("user.dir") + "\\src\\Resources\\Backups\\";
 	private static File[] backupList = new File(System.getProperty("user.dir") + "\\src\\Resources\\Backups\\").listFiles();
 	private static File archiveName = new File(backupDirString + "Cuttlefish backup from " + dFmt.format(date) + ".zip");
-	private static File backupDirFile = new File(backupDirString);
 	private static CuttlefishSQL cuttlefishSQL = new CuttlefishSQL();
+	private static File backupDirFile = new File(backupDirString);
+	private static ResultSetMetaData rsmd;
+	private static int columnsNumber;
+	private static ResultSet resultSet;
 
-	public static void main(String[] args) throws IOException, CuttlefishException{
-		DataStorage.testConnection();
+	public static void main(String[] args) throws IOException, CuttlefishException, SQLException{
+		DatabaseInterface.derp();
+//		System.out.println("INSERT INTO teacher_list (ID, Name, Supervisor, Classes) VALUES (12345, 'Teacher 1', 'Supervisor 1', '[\"Class 1\", \"Class 2\", \"Class 3\", \"Class 4\"]')");
+//		DataStorage.testConnection();
 	}
 	
-	private static void testConnection(){
+	private static void testConnection() throws SQLException{
 		doQuery("TRUNCATE teacher_list", false);
-		doQuery("LOAD DATA LOCAL INFILE 'C:\\Users\\Canon\\Desktop\\TeacherList.txt' INTO TABLE teacher_list", false);
+		doQuery("INSERT INTO teacher_list (ID, Name, Supervisor, Classes) VALUES (12345, 'Teacher 1', 'Supervisor 1', '[\"Class 1\", \"Class 2\", \"Class 3\", \"Class 4\"]')", false);
 		doQuery("SELECT * FROM `teacher_list`", true);
+		System.out.println(resultSet);
+		System.out.println(resultSet.next());
+		while (resultSet.next()) {
+		    for (int i = 1; i <= columnsNumber; i++){
+		        if (i > 1) System.out.print(",  ");
+		        String columnValue = resultSet.getString(i);
+		        System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
+		    }
+		}
 	}
 
-	private static void doQuery(String sql, Boolean display) {
+	private static void doQuery(String sql, Boolean display){
 		try{
 			PreparedStatement statement = cuttlefishSQL.connect().prepareStatement(sql);
 			if(display && statement.execute()){
 				System.out.println("Result Set: " + statement.getResultSet().toString());
 				System.out.println("Status: Computing");
-				ResultSet resultSet = statement.getResultSet();
-				ResultSetMetaData rsmd = resultSet.getMetaData();
-				int columnsNumber = rsmd.getColumnCount();
-				System.out.println("Status: Retrieving");
-				while (resultSet.next()) {
-				    for (int i = 1; i <= columnsNumber; i++){
-				        if (i > 1) System.out.print(",  ");
-				        String columnValue = resultSet.getString(i);
-				        System.out.print(rsmd.getColumnName(i) + ": " + columnValue);
-				    }
-				}
-				System.out.println("Status: Queried");
+				columnsNumber = rsmd.getColumnCount();
+				resultSet = statement.getResultSet();
+				rsmd = resultSet.getMetaData();
 			}
-		}catch (SQLException e) {
+		}catch (SQLException e){
 			e.printStackTrace();
 		}
 	}
