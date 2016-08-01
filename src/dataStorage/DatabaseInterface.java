@@ -44,13 +44,35 @@ public class DatabaseInterface{
 			derp.dispose();
 	
 		// Menu bar
-		JMenu menu = new JMenu(genHTML("Menu 1", "Verdana", "black", 40));
-			menu.add(new JMenuItem(genHTML("Item 1", "Verdana", "black", 40)));
-			menu.add(new JMenuItem(genHTML("Item 2", "Verdana", "black", 40)));
-			menu.add(new JMenuItem(genHTML("Item 3", "Verdana", "black", 40)));
-			menu.add(new JMenuItem(genHTML("Item 4", "Verdana", "black", 40)));
+		JMenu cuttefishMenu = new JMenu(genHTML("Cuttlefish", "Verdana", "black", 40));
+		JMenuItem cuttlefish1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
+		JMenuItem cuttlefish2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
+		JMenuItem cuttlefish3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
+		JMenuItem cuttlefish4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			
+		JMenu fileMenu = new JMenu(genHTML("File", "Verdana", "black", 40));
+		JMenuItem file1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
+		JMenuItem file2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
+		JMenuItem file3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
+		JMenuItem file4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			
+		JMenu editMenu = new JMenu(genHTML("Edit", "Verdana", "black", 40));
+		JMenuItem edit1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
+		JMenuItem edit2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
+		JMenuItem edit3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
+		JMenuItem edit4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			
+		JMenu viewMenu = new JMenu(genHTML("View", "Verdana", "black", 40));
+		JMenuItem view1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
+		JMenuItem view2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
+		JMenuItem view3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
+		JMenuItem view4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			
 		JMenuBar jmb = new JMenuBar();
-			jmb.add(menu);
+			jmb.add(cuttefishMenu);
+			jmb.add(fileMenu);
+			jmb.add(editMenu);
+			jmb.add(viewMenu);
 			jmb.setVisible(true);
 			
 		// Layer 1 panel
