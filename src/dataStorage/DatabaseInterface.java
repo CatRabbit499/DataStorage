@@ -3,6 +3,7 @@ package dataStorage;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
@@ -20,6 +21,7 @@ public class DatabaseInterface{
 	public static final int HEIGHT = Integer.valueOf(new Long(Math.round(Toolkit.getDefaultToolkit().getScreenSize().getHeight())).intValue());
 	public static final int WIDTH = Integer.valueOf(new Long(Math.round(Toolkit.getDefaultToolkit().getScreenSize().getWidth())).intValue());
 	public static final ImageIcon BG_IMG = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Cuttlefish.jpg"));
+	public static final Font FONT = new Font("Verdana", Font.PLAIN, 40);
 	public static final int BG_IMG_W = BG_IMG.getIconWidth();
 	public static final int BG_IMG_H = BG_IMG.getIconHeight();
 	public static final boolean isUHD = WIDTH > 1920 && HEIGHT > 1080;
@@ -49,24 +51,38 @@ public class DatabaseInterface{
 		JMenuItem cuttlefish2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
 		JMenuItem cuttlefish3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
 		JMenuItem cuttlefish4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
-			
+			cuttefishMenu.add(cuttlefish1);
+			cuttefishMenu.add(cuttlefish2);
+			cuttefishMenu.add(cuttlefish3);
+			cuttefishMenu.add(cuttlefish4);
 		JMenu fileMenu = new JMenu(genHTML("File", "Verdana", "black", 40));
 		JMenuItem file1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
 		JMenuItem file2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
 		JMenuItem file3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
 		JMenuItem file4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			fileMenu.add(file1);
+			fileMenu.add(file2);
+			fileMenu.add(file3);
+			fileMenu.add(file4);
 			
 		JMenu editMenu = new JMenu(genHTML("Edit", "Verdana", "black", 40));
 		JMenuItem edit1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
 		JMenuItem edit2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
 		JMenuItem edit3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
 		JMenuItem edit4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
-			
+			editMenu.add(edit1);
+			editMenu.add(edit2);
+			editMenu.add(edit3);
+			editMenu.add(edit4);
 		JMenu viewMenu = new JMenu(genHTML("View", "Verdana", "black", 40));
 		JMenuItem view1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
 		JMenuItem view2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
 		JMenuItem view3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
 		JMenuItem view4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			viewMenu.add(view1);
+			viewMenu.add(view2);
+			viewMenu.add(view3);
+			viewMenu.add(view4);
 			
 		JMenuBar jmb = new JMenuBar();
 			jmb.add(cuttefishMenu);
@@ -77,20 +93,19 @@ public class DatabaseInterface{
 			
 		// Layer 1 panel
 		JButton buttonOne = new JButton(genHTML("Click the button!", "Verdana", "black", 40));
-			if(isUHD) buttonOne.setFont(new Font("Verdana", Font.PLAIN, 40));
+			if(isUHD) buttonOne.setFont(FONT);
 		JLabel label = new JLabel(genHTML("Label text OMG", "Verdana", "black", 40));
-			if(isUHD) label.setFont(new Font("Verdana", Font.PLAIN, 40));
+			if(isUHD) label.setFont(FONT);
 			label.setHorizontalAlignment(SwingConstants.CENTER);
 			label.setOpaque(true);
 		JPanel layerOnePanel = new JPanel();
 			layerOnePanel.setLayout(new BorderLayout());
-			layerOnePanel.setSize(BG_IMG_W - (PAD_L + PAD_R), BG_IMG_H - PAD_D + 5);
+			layerOnePanel.setSize(BG_IMG_W, BG_IMG_H);
 			layerOnePanel.add(jmb, BorderLayout.NORTH);
 			layerOnePanel.setBackground(Color.GRAY);
 
 		// Background image
 		JLabel backgroundLabel = new JLabel();
-			//backgroundLabel.setIcon(new ImageIcon(BG_IMG.getImage().getScaledInstance(500, 500, Image.SCALE_DEFAULT)));
 			backgroundLabel.setIcon(BG_IMG);
 			backgroundLabel.setSize(BG_IMG_W, BG_IMG_H);
 		JPanel backgroundPanel = new JPanel();
@@ -103,11 +118,12 @@ public class DatabaseInterface{
 			mainContentPane.add(layerOnePanel, new Integer(2));
 		
 		// Main frame
-		JFrame mainFrame = new JFrame("Cuttlefish Database Interface");
-			mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JFrame mainFrame = new JFrame();
+			mainFrame.setFont(FONT);
+			mainFrame.setTitle("Cuttlefish Database Interface");
+			mainFrame.setIconImage(new ImageIcon(BG_IMG.getImage().getScaledInstance(3840, 2160, Image.SCALE_DEFAULT)).getImage());
 			mainFrame.setSize(BG_IMG.getIconWidth(), BG_IMG.getIconHeight() + (BG_IMG.getIconHeight() / 15));
-			//System.out.println(BG_IMG.getIconWidth() +", "+ BG_IMG.getIconHeight());
-			//System.out.println(mainFrame.getWidth() + ", " + mainFrame.getHeight());
+			mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			mainFrame.setContentPane(mainContentPane);
 			mainFrame.setLocationRelativeTo(null);
 			mainFrame.setVisible(true);

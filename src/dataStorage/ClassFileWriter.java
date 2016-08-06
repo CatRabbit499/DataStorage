@@ -6,9 +6,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,8 +17,8 @@ import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
 public class ClassFileWriter{
-	public static JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
 	public static final Font uniFont = new Font("Verdana", Font.PLAIN, 40);
+	public static final String ENV_VARS = System.getenv("PATH");
 	public static JPanel buttonPanel = new JPanel();
 	public static JTextPane tp = new JTextPane();
 	public static PrintStream compileErrorStream;
@@ -34,20 +33,25 @@ public class ClassFileWriter{
     public static void main(String[] args) throws IOException{
     	setUpButtons();
 		tp.setFont(new Font("Verdana", Font.PLAIN, 40));
-		createRunnableCode("C:/users/canon/desktop/test");
+		createRunnableCode("C:\\users\\canon\\desktop\\test", "test.java");
     }
 
-	public static void createRunnableCode(String filename) throws IOException{
-		compileErrorStream = new PrintStream(""); // Figure out printstreams
-		cFile = new File(filename + ".class");
-		jFile = new File(filename + ".java");
+	public static void createRunnableCode(String filepath, String filename) throws IOException{
+		//compileErrorStream = new PrintStream("test"); // Figure out printstreams
+		cFile = new File("" + filename + ".class");
+		jFile = new File("" + filename + ".java");
 		outputWriter = new FileWriter(jFile);
     	if(jFile.exists()) jFile.delete();
     	if(cFile.exists()) cFile.delete();
-    	compileButton.setFont(new Font("Verdana", Font.PLAIN, 40));
+		compileButton.setFont(new Font("Verdana", Font.PLAIN, 40));
 		compileButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				javac.run(null, null, compileErrorStream, filename);
+				try{
+					System.out.println("javac \"" + filepath + ".java\"");
+					Runtime.getRuntime().exec("javac \"" + filepath + ".java\"");
+				}catch(Exception e1){
+					e1.printStackTrace();
+				}
 			}
 		});
 		runButton.setFont(new Font("Verdana", Font.PLAIN, 40));
@@ -102,13 +106,6 @@ public class ClassFileWriter{
 		});
 		buttonPanel.add(submitButton);
 		buttonPanel.add(cancelButton);
-		compileButton.setFont(new Font("Verdana", Font.PLAIN, 40));
-		compileButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				JavaCompiler jc = ToolProvider.getSystemJavaCompiler();
-				jc.run(null, null, null, "");
-			}
-		});
 		runButton.setFont(new Font("Verdana", Font.PLAIN, 40));
 		runButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
