@@ -31,59 +31,25 @@ public class ClassFileWriter{
 	public static File jFile;
 	
     public static void main(String[] args) throws IOException{
-    	setUpButtons();
 		tp.setFont(new Font("Verdana", Font.PLAIN, 40));
-		createRunnableCode("C:\\users\\canon\\desktop\\test", "test.java");
+		createRunnableCode("C:\\users\\canon\\desktop\\", "test");
     }
 
 	public static void createRunnableCode(String filepath, String filename) throws IOException{
-		//compileErrorStream = new PrintStream("test"); // Figure out printstreams
-		cFile = new File("" + filename + ".class");
-		jFile = new File("" + filename + ".java");
+		cFile = new File(filepath + filename + ".class");
+		jFile = new File(filepath + filename + ".java");
 		outputWriter = new FileWriter(jFile);
     	if(jFile.exists()) jFile.delete();
     	if(cFile.exists()) cFile.delete();
-		compileButton.setFont(new Font("Verdana", Font.PLAIN, 40));
-		compileButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				try{
-					System.out.println("javac \"" + filepath + ".java\"");
-					Runtime.getRuntime().exec("javac \"" + filepath + ".java\"");
-				}catch(Exception e1){
-					e1.printStackTrace();
-				}
-			}
-		});
-		runButton.setFont(new Font("Verdana", Font.PLAIN, 40));
-		runButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				
-			}
-		});
-    	
-		JFrame frame = new JFrame("File Writer");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(640, 480);
-    		frame.setLocationRelativeTo(null);
-    		frame.add(tp);
-    		frame.add(buttonPanel, BorderLayout.SOUTH);
-    		frame.setVisible(true);
-    }
-	
-	public static void writeCode(String code) throws IOException{
-    	outputWriter.write(code + "\n");
-    }
-    public static void writeCode() throws IOException{
-    	outputWriter.write("\n");
-    }
-    private static void setUpButtons(){
-    	buttonPanel = new JPanel();
-		runButton = new JButton("Run");
+		compileButton = new JButton("Compile");
 		submitButton = new JButton("Submit");
 		cancelButton = new JButton("Cancel");
-		compileButton = new JButton("Compile");
+		runButton = new JButton("Run");
+		buttonPanel = new JPanel();
+		buttonPanel.add(submitButton);
+		buttonPanel.add(cancelButton);
 		submitButton.setFont(new Font("Verdana", Font.PLAIN, 40));
-		submitButton.addActionListener(new ActionListener(){
+    	submitButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				try{
 			    	writeCode(tp.getText());
@@ -98,19 +64,47 @@ public class ClassFileWriter{
 				}
 			}
 		});
-		cancelButton.setFont(new Font("Verdana", Font.PLAIN, 40));
+    	cancelButton.setFont(new Font("Verdana", Font.PLAIN, 40));
 		cancelButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				tp.setText("");
 			}
 		});
-		buttonPanel.add(submitButton);
-		buttonPanel.add(cancelButton);
-		runButton.setFont(new Font("Verdana", Font.PLAIN, 40));
-		runButton.addActionListener(new ActionListener(){
+		compileButton.setFont(uniFont);
+		compileButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
+				try{
+					Runtime.getRuntime().exec("javac \"" + filepath + filename + ".java\"");
+				}catch(Exception e1){
+					e1.printStackTrace();
+				}
 			}
 		});
-	}
+		runButton.setFont(uniFont);
+		runButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				try{
+					System.out.println(filepath + filename);
+					ClassLoader.getSystemClassLoader().loadClass(filename);
+				}catch(ClassNotFoundException e1){
+					e1.printStackTrace();
+				}
+			}
+		});
+    	
+		JFrame frame = new JFrame("File Writer");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setSize(1280, 960);
+    		frame.setLocationRelativeTo(null);
+    		frame.add(tp);
+    		frame.add(buttonPanel, BorderLayout.SOUTH);
+    		frame.setVisible(true);
+    }
+	
+	public static void writeCode(String code) throws IOException{
+    	outputWriter.write(code + "\n");
+    }
+    public static void writeCode() throws IOException{
+    	outputWriter.write("\n");
+    }
 }
