@@ -3,18 +3,18 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.io.PrintWriter;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 
 public class ClassFileWriter{
 	public static final Font uniFont = new Font("Verdana", Font.PLAIN, 40);
@@ -84,9 +84,8 @@ public class ClassFileWriter{
 		runButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				try{
-					System.out.println(filepath + filename);
-					ClassLoader.getSystemClassLoader().loadClass(filename);
-				}catch(ClassNotFoundException e1){
+					runCmd(new String[]{"cd " + filepath, "java " + filename});
+				}catch(IOException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -100,6 +99,16 @@ public class ClassFileWriter{
     		frame.add(buttonPanel, BorderLayout.SOUTH);
     		frame.setVisible(true);
     }
+	
+	public static void runCmd(List<String> commands) throws IOException{
+		ProcessBuilder builder = new ProcessBuilder();
+		builder.redirectErrorStream(true);
+		builder.command("bash", "-c", String.format(null, commands));
+		Process p = builder.start();
+		BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line;
+		while((line = r.readLine())!= null) System.out.println(line);
+	}
 	
 	public static void writeCode(String code) throws IOException{
     	outputWriter.write(code + "\n");
