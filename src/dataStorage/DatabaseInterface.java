@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,7 +34,6 @@ public class DatabaseInterface{
 	public static int PAD_R = 9001;
 	
 	public static void derp(){
-		
 		// Jframe derp
 		JFrame derp = new JFrame();
 			derp.setLocation(-WIDTH,-HEIGHT);
@@ -48,18 +49,58 @@ public class DatabaseInterface{
 		// Menu bar
 		JMenu cuttefishMenu = new JMenu(genHTML("Cuttlefish", "Verdana", "black", 40));
 		JMenuItem cuttlefish1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
+			cuttlefish1.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem cuttlefish2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
+			cuttlefish2.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem cuttlefish3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
+			cuttlefish3.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem cuttlefish4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			cuttlefish4.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 			cuttefishMenu.add(cuttlefish1);
 			cuttefishMenu.add(cuttlefish2);
 			cuttefishMenu.add(cuttlefish3);
 			cuttefishMenu.add(cuttlefish4);
 		JMenu fileMenu = new JMenu(genHTML("File", "Verdana", "black", 40));
 		JMenuItem file1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
+			file1.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem file2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
+			file2.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem file3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
+			file3.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem file4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			file4.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 			fileMenu.add(file1);
 			fileMenu.add(file2);
 			fileMenu.add(file3);
@@ -67,28 +108,66 @@ public class DatabaseInterface{
 			
 		JMenu editMenu = new JMenu(genHTML("Edit", "Verdana", "black", 40));
 		JMenuItem edit1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
+			edit1.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem edit2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
+			edit2.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem edit3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
+			edit3.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem edit4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			edit4.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 			editMenu.add(edit1);
 			editMenu.add(edit2);
 			editMenu.add(edit3);
 			editMenu.add(edit4);
 		JMenu viewMenu = new JMenu(genHTML("View", "Verdana", "black", 40));
 		JMenuItem view1 = new JMenuItem(genHTML("Item 1", "Verdana", "black", 40));
+			view1.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem view2 = new JMenuItem(genHTML("Item 2", "Verdana", "black", 40));
+			view2.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem view3 = new JMenuItem(genHTML("Item 3", "Verdana", "black", 40));
+			view3.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 		JMenuItem view4 = new JMenuItem(genHTML("Item 4", "Verdana", "black", 40));
+			view4.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
 			viewMenu.add(view1);
 			viewMenu.add(view2);
 			viewMenu.add(view3);
 			viewMenu.add(view4);
 			
 		JMenuBar jmb = new JMenuBar();
-			jmb.add(cuttefishMenu);
-			jmb.add(fileMenu);
-			jmb.add(editMenu);
-			jmb.add(viewMenu);
+			JMenu[] menus = {cuttefishMenu, fileMenu, editMenu, viewMenu};
+			for(JMenu j : menus) jmb.add(j);
 			jmb.setVisible(true);
 			
 		// Layer 1 panel

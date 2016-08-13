@@ -100,10 +100,10 @@ public class ClassFileWriter{
     		frame.setVisible(true);
     }
 	
-	public static void runCmd(List<String> commands) throws IOException{
+	public static void runCmd(String[] strings) throws IOException{
 		ProcessBuilder builder = new ProcessBuilder();
 		builder.redirectErrorStream(true);
-		builder.command("bash", "-c", String.format(null, commands));
+		builder.command("bash", "-c", String.format(null, strings));
 		Process p = builder.start();
 		BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line;
