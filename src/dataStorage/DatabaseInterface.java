@@ -1,12 +1,12 @@
 package dataStorage;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +17,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 public class DatabaseInterface{
@@ -24,16 +26,17 @@ public class DatabaseInterface{
 	public static final int WIDTH = Integer.valueOf(new Long(Math.round(Toolkit.getDefaultToolkit().getScreenSize().getWidth())).intValue());
 	public static final ImageIcon BG_IMG = new ImageIcon(ClassLoader.getSystemClassLoader().getResource("Cuttlefish.jpg"));
 	public static final Font FONT = new Font("Verdana", Font.PLAIN, 40);
-	public static final int BG_IMG_W = BG_IMG.getIconWidth();
-	public static final int BG_IMG_H = BG_IMG.getIconHeight();
 	public static final boolean isUHD = WIDTH > 1920 && HEIGHT > 1080;
-	private static final int CENTER = 0;
+	public static ClassFileWriter cfl = new ClassFileWriter();
+	public static final int BG_IMG_H = BG_IMG.getIconHeight();
+	public static final int BG_IMG_W = BG_IMG.getIconWidth();
+	public static final int CENTER = 0;
 	public static int PAD_U = 9001;
 	public static int PAD_D = 9001;
 	public static int PAD_L = 9001;
 	public static int PAD_R = 9001;
 	
-	public static void derp(){
+	public static void derp() throws IOException{
 		// Jframe derp
 		JFrame derp = new JFrame();
 			derp.setLocation(-WIDTH,-HEIGHT);
@@ -173,15 +176,19 @@ public class DatabaseInterface{
 		// Layer 1 panel
 		JButton buttonOne = new JButton(genHTML("Click the button!", "Verdana", "black", 40));
 			if(isUHD) buttonOne.setFont(FONT);
-		JLabel label = new JLabel(genHTML("Label text OMG", "Verdana", "black", 40));
-			if(isUHD) label.setFont(FONT);
-			label.setHorizontalAlignment(SwingConstants.CENTER);
-			label.setOpaque(true);
-		JPanel layerOnePanel = new JPanel();
-			layerOnePanel.setLayout(new BorderLayout());
-			layerOnePanel.setSize(BG_IMG_W, BG_IMG_H);
-			layerOnePanel.add(jmb, BorderLayout.NORTH);
-			layerOnePanel.setBackground(Color.GRAY);
+		JTextField teacherName = new JTextField(genHTML("Label text OMG", "Verdana", "black", 40));
+			if(isUHD) teacherName.setFont(FONT);
+			teacherName.setHorizontalAlignment(SwingConstants.CENTER);
+			teacherName.setSize(WIDTH/5, HEIGHT/5);
+			teacherName.setOpaque(true);
+		JTextPane jtp = new JTextPane();
+			jtp.add(teacherName);
+		JPanel cLayer1 = new JPanel();
+			cLayer1.setLayout(new BorderLayout());
+			cLayer1.setSize(BG_IMG_W, BG_IMG_H);
+			cLayer1.add(jmb, BorderLayout.NORTH);
+			cLayer1.add(jtp);
+			cLayer1.setOpaque(false);
 
 		// Background image
 		JLabel backgroundLabel = new JLabel();
@@ -194,7 +201,7 @@ public class DatabaseInterface{
 		// Main content pane
 		JLayeredPane mainContentPane = new JLayeredPane();
 			mainContentPane.add(backgroundPanel, new Integer(1));
-			mainContentPane.add(layerOnePanel, new Integer(2));
+			mainContentPane.add(cLayer1, new Integer(2));
 		
 		// Main frame
 		JFrame mainFrame = new JFrame();

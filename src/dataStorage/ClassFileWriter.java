@@ -31,7 +31,7 @@ public class ClassFileWriter{
 	public static File jFile;
 	
     public static void main(String[] args) throws IOException{
-		tp.setFont(new Font("Verdana", Font.PLAIN, 40));
+    	tp.setFont(new Font("Verdana", Font.PLAIN, 40));
 		createRunnableCode("C:\\users\\canon\\desktop\\", "test");
     }
 
