@@ -1,7 +1,6 @@
 package dataStorage;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -10,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -19,7 +17,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Spring;
 import javax.swing.SpringLayout;
 
 public class DatabaseInterface{
@@ -194,23 +191,25 @@ public class DatabaseInterface{
 		JPanel cLayer1Content = new JPanel();
 			cLayer1Content.setLayout(sl);
 			cLayer1Content.add(l1);
-			cLayer1Content.add(t1);
-			// ID
-//			sl.putConstraint(SpringLayout.WEST, l1, BG_IMG.getIconWidth()/4, SpringLayout.WEST, cLayer1Content); // L Label -> L Panel
-//			sl.putConstraint(SpringLayout.NORTH, l1, 25, SpringLayout.NORTH, cLayer1Content);                    // T Label -> T Panel
-//			sl.putConstraint(SpringLayout.NORTH, t1, 25, SpringLayout.NORTH, cLayer1Content);                    // T Field -> T Panel	
-//			sl.putConstraint(SpringLayout.WEST, t1, 20, SpringLayout.EAST, l1);                                  // R Field -> L Label
 			
-			sl.putConstraint(SpringLayout.WEST, t1, BG_IMG.getIconWidth()/2, SpringLayout.WEST, cLayer1Content); // L Label -> L Panel
-			sl.putConstraint(SpringLayout.NORTH, t1, 25, SpringLayout.NORTH, cLayer1Content);                    // T Label -> T Panel
-			//sl.putConstraint(SpringLayout.NORTH, l1, 25, SpringLayout.NORTH, cLayer1Content);                    // T Field -> T Panel	
-			sl.putConstraint(SpringLayout.EAST, l1, 0, SpringLayout.WEST, t1);                                  // R Field -> L Label
+			// ID
+			sl.putConstraint(SpringLayout.WEST, l1, BG_IMG.getIconWidth()/4, SpringLayout.WEST, cLayer1Content); // L Label -> L Panel
+			sl.putConstraint(SpringLayout.NORTH, l1, 25, SpringLayout.NORTH, cLayer1Content);                    // T Label -> T Panel
+			sl.putConstraint(SpringLayout.NORTH, t1, 25, SpringLayout.NORTH, cLayer1Content);                    // T Field -> T Panel	
+			sl.putConstraint(SpringLayout.WEST, t1, 20, SpringLayout.EAST, l1);                                  // R Field -> L Label
 			
 			// Teacher
-			//sl.putConstraint(null,null,null,null,null);
-			//sl.putConstraint(null,null,null,null,null);
+			cLayer1Content.add(t2);
+			cLayer1Content.add(t2);
+			
+			sl.putConstraint(SpringLayout.WEST, l2, BG_IMG.getIconWidth()/4, SpringLayout.WEST, cLayer1Content); // L Label -> L Panel
+			sl.putConstraint(SpringLayout.NORTH, l2, 25, SpringLayout.NORTH, l1);                                // T Label -> T Panel
+			sl.putConstraint(SpringLayout.NORTH, t2, 25, SpringLayout.NORTH, l1);                                // T Field -> T Panel	
+			sl.putConstraint(SpringLayout.WEST, t2, 20, SpringLayout.EAST, l2);                                  // R Field -> L Label
+			
 			// Supervisor
-			// Classes
+			cLayer1Content.add(t3);
+			cLayer1Content.add(l3);
 			
 		JPanel cLayer1 = new JPanel();
 			cLayer1.setLayout(new BorderLayout());
