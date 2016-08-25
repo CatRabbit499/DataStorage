@@ -1,14 +1,17 @@
 package dataStorage;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.text.NumberFormat;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -18,6 +21,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 public class DatabaseInterface{
 	public static final int HEIGHT = Integer.valueOf(new Long(Math.round(Toolkit.getDefaultToolkit().getScreenSize().getHeight())).intValue());
@@ -171,12 +176,35 @@ public class DatabaseInterface{
 			for(JMenu j : menus) jmb.add(j);
 			
 		// Layer 1 panel
+		
+		//ID
+		JFormattedTextField t1 = new JFormattedTextField();
+		TextPrompt p0 = new TextPrompt("Numbers Only", t1);
+		p0.setForeground( Color.GRAY );
+		p0.changeAlpha(0.5f);
+		p0.setFont(FONT);
+		t1.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
+		t1.setColumns(15);
+		//Teacher
+		JFormattedTextField t2 = new JFormattedTextField();
+		TextPrompt p1 = new TextPrompt("Test 2", t2);
+		p1.setForeground( Color.GRAY );
+		p1.changeAlpha(0.5f);
+		p1.setFont(FONT);
+		t2.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
+		t2.setColumns(15);
+		//Supervisor
+		JFormattedTextField t3 = new JFormattedTextField();
+		TextPrompt p2 = new TextPrompt("Test 3", t3);
+		p2.setForeground( Color.GRAY );
+		p2.changeAlpha(0.5f);
+		p2.setFont(FONT);
+		t3.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
+		t3.setColumns(15);
+			
 		JLabel l1 = new JLabel("ID");
-		JTextField t1 = new JTextField(15);
 		JLabel l2 = new JLabel("Teacher");
-		JTextField t2 = new JTextField(15);	
 		JLabel l3 = new JLabel("Supervisor");
-		JTextField t3 = new JTextField(15);	
 		// TODO Make expandable classes section	
 		if(isUHD){
 			l1.setFont(FONT);
@@ -191,25 +219,31 @@ public class DatabaseInterface{
 		JPanel cLayer1Content = new JPanel();
 			cLayer1Content.setLayout(sl);
 			cLayer1Content.add(l1);
+			cLayer1Content.add(t1);
 			
 			// ID
-			sl.putConstraint(SpringLayout.WEST, l1, BG_IMG.getIconWidth()/4, SpringLayout.WEST, cLayer1Content); // L Label -> L Panel
-			sl.putConstraint(SpringLayout.NORTH, l1, 25, SpringLayout.NORTH, cLayer1Content);                    // T Label -> T Panel
-			sl.putConstraint(SpringLayout.NORTH, t1, 25, SpringLayout.NORTH, cLayer1Content);                    // T Field -> T Panel	
-			sl.putConstraint(SpringLayout.WEST, t1, 20, SpringLayout.EAST, l1);                                  // R Field -> L Label
+			sl.putConstraint(SpringLayout.WEST, l1, WIDTH/4, SpringLayout.WEST, cLayer1Content);
+			sl.putConstraint(SpringLayout.NORTH, l1, 25, SpringLayout.NORTH, cLayer1Content);
+			sl.putConstraint(SpringLayout.NORTH, t1, 25, SpringLayout.NORTH, cLayer1Content);
+			sl.putConstraint(SpringLayout.WEST, t1, 20, SpringLayout.EAST, l1);
 			
 			// Teacher
-			cLayer1Content.add(t2);
+			cLayer1Content.add(l2);
 			cLayer1Content.add(t2);
 			
-			sl.putConstraint(SpringLayout.WEST, l2, BG_IMG.getIconWidth()/4, SpringLayout.WEST, cLayer1Content); // L Label -> L Panel
-			sl.putConstraint(SpringLayout.NORTH, l2, 25, SpringLayout.NORTH, l1);                                // T Label -> T Panel
-			sl.putConstraint(SpringLayout.NORTH, t2, 25, SpringLayout.NORTH, l1);                                // T Field -> T Panel	
-			sl.putConstraint(SpringLayout.WEST, t2, 20, SpringLayout.EAST, l2);                                  // R Field -> L Label
+			sl.putConstraint(SpringLayout.WEST, t2, 0, SpringLayout.WEST, t1);
+			sl.putConstraint(SpringLayout.NORTH, t2, 25, SpringLayout.SOUTH, t1);
+			sl.putConstraint(SpringLayout.NORTH, l2, 25, SpringLayout.SOUTH, l1);
+			sl.putConstraint(SpringLayout.EAST, l2, -20, SpringLayout.WEST, t2);
 			
 			// Supervisor
 			cLayer1Content.add(t3);
 			cLayer1Content.add(l3);
+			
+			sl.putConstraint(SpringLayout.WEST, t3, 0, SpringLayout.WEST, t2);
+			sl.putConstraint(SpringLayout.NORTH, t3, 25, SpringLayout.SOUTH, t2);
+			sl.putConstraint(SpringLayout.NORTH, l3, 25, SpringLayout.SOUTH, l2);
+			sl.putConstraint(SpringLayout.EAST, l3, -20, SpringLayout.WEST, t3);
 			
 		JPanel cLayer1 = new JPanel();
 			cLayer1.setLayout(new BorderLayout());
