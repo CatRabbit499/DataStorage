@@ -1,17 +1,19 @@
 package dataStorage;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.text.NumberFormat;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JFormattedTextField;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -19,10 +21,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
+import javax.swing.text.AbstractDocument;
 
 public class DatabaseInterface{
 	public static final int HEIGHT = Integer.valueOf(new Long(Math.round(Toolkit.getDefaultToolkit().getScreenSize().getHeight())).intValue());
@@ -177,52 +179,79 @@ public class DatabaseInterface{
 			
 		// Layer 1 panel
 		
-		//ID
-		JFormattedTextField t1 = new JFormattedTextField();
-		TextPrompt p0 = new TextPrompt("Numbers Only", t1);
-		p0.setForeground( Color.GRAY );
-		p0.changeAlpha(0.5f);
-		p0.setFont(FONT);
-		t1.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
-		t1.setColumns(15);
-		//Teacher
-		JFormattedTextField t2 = new JFormattedTextField();
-		TextPrompt p1 = new TextPrompt("Test 2", t2);
-		p1.setForeground( Color.GRAY );
-		p1.changeAlpha(0.5f);
-		p1.setFont(FONT);
-		t2.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
-		t2.setColumns(15);
-		//Supervisor
-		JFormattedTextField t3 = new JFormattedTextField();
-		TextPrompt p2 = new TextPrompt("Test 3", t3);
-		p2.setForeground( Color.GRAY );
-		p2.changeAlpha(0.5f);
-		p2.setFont(FONT);
-		t3.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(NumberFormat.getIntegerInstance())));
-		t3.setColumns(15);
-			
 		JLabel l1 = new JLabel("ID");
+		JTextField t1 = new JTextField(15);
+		((AbstractDocument)t1.getDocument()).setDocumentFilter(new NumericDocumentFilter());
+		TextPrompt p1 = new TextPrompt("Numbers Only", t1);
+		p1.setForeground(Color.GRAY);
+		p1.changeAlpha(0.5f);
+		
 		JLabel l2 = new JLabel("Teacher");
+		JTextField t2 = new JTextField(15);
+		((AbstractDocument)t2.getDocument()).setDocumentFilter(new AlphabeticDocumentFilter());
+		TextPrompt p2 = new TextPrompt("Letters Only", t2);
+		p2.setForeground(Color.GRAY);
+		p2.changeAlpha(0.5f);
+		
 		JLabel l3 = new JLabel("Supervisor");
-		// TODO Make expandable classes section	
+		JTextField t3 = new JTextField(15);
+		((AbstractDocument)t3.getDocument()).setDocumentFilter(new AlphabeticDocumentFilter());
+		TextPrompt p3 = new TextPrompt("Letters Only", t3);
+		p3.setForeground(Color.GRAY);
+		p3.changeAlpha(0.5f);
+		
+		JLabel l4 = new JLabel("Classes");
+		JTextField t4 = new JTextField(15);
+		((AbstractDocument)t4.getDocument()).setDocumentFilter(new AlphabeticDocumentFilter());
+		TextPrompt p4 = new TextPrompt("Letters & Commas Only", t4);
+		p4.setForeground(Color.GRAY);
+		p4.changeAlpha(0.5f);
 		if(isUHD){
+			p4.setFont(FONT);
+		}
+		
+		JTextArea jta = new JTextArea(8,30);
+		jta.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.GRAY,1), BorderFactory.createEmptyBorder(0, 4, 0, 0)));
+		jta.setFont(FONT);
+		
+		JButton b1 = new JButton("Submit");
+			b1.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
+		JButton b2 = new JButton("Request");
+			b2.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					
+				}
+			});
+		
+		if(isUHD){
+			p1.setFont(FONT);
+			p2.setFont(FONT);
+			p3.setFont(FONT);
 			l1.setFont(FONT);
 			t1.setFont(FONT);
 			l2.setFont(FONT);
 			t2.setFont(FONT);
 			l3.setFont(FONT);
 			t3.setFont(FONT);
+			l4.setFont(FONT);
+			t4.setFont(FONT);
+			b1.setFont(FONT);
+			b2.setFont(FONT);
 		}
 		
 		SpringLayout sl = new SpringLayout();
 		JPanel cLayer1Content = new JPanel();
 			cLayer1Content.setLayout(sl);
+			cLayer1Content.setOpaque(true); // <------- Is panel showing
 			cLayer1Content.add(l1);
 			cLayer1Content.add(t1);
 			
 			// ID
-			sl.putConstraint(SpringLayout.WEST, l1, WIDTH/4, SpringLayout.WEST, cLayer1Content);
+			sl.putConstraint(SpringLayout.WEST, l1, WIDTH/4 - WIDTH/16, SpringLayout.WEST, cLayer1Content);
 			sl.putConstraint(SpringLayout.NORTH, l1, 25, SpringLayout.NORTH, cLayer1Content);
 			sl.putConstraint(SpringLayout.NORTH, t1, 25, SpringLayout.NORTH, cLayer1Content);
 			sl.putConstraint(SpringLayout.WEST, t1, 20, SpringLayout.EAST, l1);
@@ -232,8 +261,8 @@ public class DatabaseInterface{
 			cLayer1Content.add(t2);
 			
 			sl.putConstraint(SpringLayout.WEST, t2, 0, SpringLayout.WEST, t1);
-			sl.putConstraint(SpringLayout.NORTH, t2, 25, SpringLayout.SOUTH, t1);
-			sl.putConstraint(SpringLayout.NORTH, l2, 25, SpringLayout.SOUTH, l1);
+			sl.putConstraint(SpringLayout.NORTH, t2, 25 ,SpringLayout.SOUTH, t1);
+			sl.putConstraint(SpringLayout.NORTH, l2, 28, SpringLayout.SOUTH, l1);
 			sl.putConstraint(SpringLayout.EAST, l2, -20, SpringLayout.WEST, t2);
 			
 			// Supervisor
@@ -242,8 +271,29 @@ public class DatabaseInterface{
 			
 			sl.putConstraint(SpringLayout.WEST, t3, 0, SpringLayout.WEST, t2);
 			sl.putConstraint(SpringLayout.NORTH, t3, 25, SpringLayout.SOUTH, t2);
-			sl.putConstraint(SpringLayout.NORTH, l3, 25, SpringLayout.SOUTH, l2);
+			sl.putConstraint(SpringLayout.NORTH, l3, 28, SpringLayout.SOUTH, l2);
 			sl.putConstraint(SpringLayout.EAST, l3, -20, SpringLayout.WEST, t3);
+			
+			cLayer1Content.add(t4);
+			cLayer1Content.add(l4);
+			
+			sl.putConstraint(SpringLayout.WEST, t4, 0, SpringLayout.WEST, t3);
+			sl.putConstraint(SpringLayout.NORTH, t4, 25, SpringLayout.SOUTH, t3);
+			sl.putConstraint(SpringLayout.NORTH, l4, 28, SpringLayout.SOUTH, l3);
+			sl.putConstraint(SpringLayout.EAST, l4, -20, SpringLayout.WEST, t4);
+			
+			cLayer1Content.add(b1);
+			cLayer1Content.add(b2);
+			
+			sl.putConstraint(SpringLayout.WEST, b1, (WIDTH/32)-(WIDTH/128), SpringLayout.WEST, t4);
+			sl.putConstraint(SpringLayout.NORTH, b1, 25, SpringLayout.SOUTH, t4);
+			sl.putConstraint(SpringLayout.NORTH, b2, 25, SpringLayout.SOUTH, t4);
+			sl.putConstraint(SpringLayout.WEST, b2, 20, SpringLayout.EAST, b1);
+			
+			cLayer1Content.add(jta);
+			
+			sl.putConstraint(SpringLayout.SOUTH, jta, -30, SpringLayout.SOUTH, cLayer1Content);
+			sl.putConstraint(SpringLayout.WEST, jta, (WIDTH/4)-(WIDTH/8)-(WIDTH/64), SpringLayout.WEST, cLayer1Content);
 			
 		JPanel cLayer1 = new JPanel();
 			cLayer1.setLayout(new BorderLayout());
