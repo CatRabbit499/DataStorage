@@ -1,9 +1,7 @@
 package dataStorage;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -223,7 +221,10 @@ public class DatabaseInterface{
 		JButton b2 = new JButton("Request");
 			b2.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e){
-					
+					String s;
+					s = CuttlefishSQL.submitSQL("select * from `teacher_list`");
+					//s = CuttlefishSQL.submitSQL("");
+					jta.setText(s);
 				}
 			});
 		

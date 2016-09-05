@@ -29,37 +29,71 @@ public class CuttlefishSQL{
 		}
 	}
 	
-	public static void submitSQL(String input){
-		try{
-		    stmt = con.createStatement();
-		    rs = stmt.executeQuery(input);
-		    if(stmt.execute(input)){
-		        rs = stmt.getResultSet();
-		        printOutput(rs);
-		    }
-		    else{
-		    	System.out.println("Unable to execute query ;-;");
-		    }
+	public static String submitSQL(String input){
+		if(input.contains("insert") || input.contains("truncate")){
+			//System.out.println("Contains insert");
+			try{
+			    stmt = con.createStatement();
+			    stmt.executeUpdate(input);
+			    //return "Fox Bat";
+			    return "";
+			}
+			catch (SQLException ex){
+			    System.out.println("SQLException: " + ex.getMessage());
+			    System.out.println("SQLState: " + ex.getSQLState());
+			    System.out.println("VendorError: " + ex.getErrorCode());
+			}
+			finally{
+			    if(rs != null){
+			        try{
+			            rs.close();
+			        }catch(SQLException sqlEx){}
+			        rs = null;
+			    }
+			    if(stmt != null){
+			        try{
+			            stmt.close();
+			        } catch(SQLException sqlEx){}
+			        stmt = null;
+			    }
+			}
 		}
-		catch (SQLException ex){
-		    System.out.println("SQLException: " + ex.getMessage());
-		    System.out.println("SQLState: " + ex.getSQLState());
-		    System.out.println("VendorError: " + ex.getErrorCode());
+		else{
+			//System.out.println("Has no insert");
+			try{
+			    stmt = con.createStatement();
+			    rs = stmt.executeQuery(input);
+			    if(stmt.execute(input)){
+			        rs = stmt.getResultSet();
+			        return returnOutput(rs);
+			        // return rs;
+			    }
+			    else{
+			    	System.out.println("Unable to execute query ;-;");
+			    }
+			}
+			catch (SQLException ex){
+			    System.out.println("SQLException: " + ex.getMessage());
+			    System.out.println("SQLState: " + ex.getSQLState());
+			    System.out.println("VendorError: " + ex.getErrorCode());
+			}
+			finally{
+			    if(rs != null){
+			        try{
+			            rs.close();
+			        }catch(SQLException sqlEx){}
+			        rs = null;
+			    }
+			    if(stmt != null){
+			        try{
+			            stmt.close();
+			        } catch(SQLException sqlEx){}
+			        stmt = null;
+			    }
+			}
 		}
-		finally{
-		    if(rs != null){
-		        try{
-		            rs.close();
-		        }catch(SQLException sqlEx){}
-		        rs = null;
-		    }
-		    if(stmt != null){
-		        try{
-		            stmt.close();
-		        } catch(SQLException sqlEx){}
-		        stmt = null;
-		    }
-		}
+		
+		return null;
 	}
 
 	private static void printOutput(ResultSet rs) throws SQLException{
@@ -73,5 +107,21 @@ public class CuttlefishSQL{
             }
             System.out.println("");
         }
+	}
+	
+	private static String returnOutput(ResultSet rs) throws SQLException{
+		String output = "";
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int columnsNumber = rsmd.getColumnCount();
+		while (rs.next()){
+			for(int i = 1; i <= columnsNumber; i++){
+				//if (i > 1) output += (",  ");
+				if (i > 1) output += ("\n");
+				String columnValue = rs.getString(i);
+				output += (rsmd.getColumnName(i) + ": " + columnValue);
+			}
+        output += "\n";
+		}
+    return output;
 	}
 }
